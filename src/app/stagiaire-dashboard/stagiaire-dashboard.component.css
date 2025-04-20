@@ -1,0 +1,26 @@
+.dashboard-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 40px 20px;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .dashboard-card {
+    background-color: #f8f9fa;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  }
+  
+  h2 {
+    color: #2c3e50;
+  }
+  
+  ul {
+    text-align: left;
+    list-style: disc;
+    padding-left: 20px;
+  }
+  
