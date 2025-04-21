@@ -6,21 +6,15 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/auth'; // ou l'URL de ton backend Spring Boot
-
-  private baseUrl = 'http://localhost:8080/api/auth'; // backend à venir
+  private apiUrl = 'http://localhost:8084/api/auth'; 
 
   constructor(private http: HttpClient) {}
 
-  signIn(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/signin`, { email, password });
+  signin(email: string, password: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/signin`, { email, password });
   }
 
-  signUp(fullName: string, email: string, password: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/signup`, { fullName, email, password });
-  }
-  signup(userData: any) {
+  signup(userData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/signup`, userData);
   }
-  
 }

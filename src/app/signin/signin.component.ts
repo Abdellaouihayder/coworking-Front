@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-signin',
@@ -9,28 +10,38 @@ import { Router } from '@angular/router';
 export class SigninComponent {
   user = {
     email: '',
-    password: '',
-    role: '' // 'freelance' ou 'stagiaire'
-  };
+    password: ''
+    };
 
-  constructor(private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
-    // ✅ Simple validation côté frontend
-    if (!this.user.email || !this.user.password || !this.user.role) {
+    if (!this.user.email || !this.user.password) {
       alert('Veuillez remplir tous les champs.');
       return;
     }
 
-    // 🔐 Plus tard : ici on fera appel à Spring Boot (AuthService)
-    // Simule une connexion locale temporaire
-
-    if (this.user.role === 'freelance') {
-      this.router.navigate(['/freelance-dashboard']);
-    } else if (this.user.role === 'stagiaire') {
-      this.router.navigate(['/stagiaire-dashboard']);
-    } else {
-      alert("Rôle non reconnu !");
-    }
+    this.authService.signin(this.user.email, this.user.password).subscribe(
+      (response) => {
+        if (response.success) {
+         
+          localStorage.setItem('userData', JSON.stringify(response.user));
+          
+          const userRole = response.data?.role;
+          if (userRole === 'freelance') {
+            this.router.navigate(['/freelance-dashboard']);
+          } else if (userRole === 'stagiaire') {
+            this.router.navigate(['/stagiaire-dashboard']);
+          } else {
+            this.router.navigate(['/']);
+          }
+        } else {
+          alert(response.message || 'Erreur lors de la connexion.');
+        }
+      },
+      (error) => {
+        alert('Erreur lors de la connexion: ' + (error.error?.message || 'Erreur inconnue'));
+      }
+    );
   }
 }
